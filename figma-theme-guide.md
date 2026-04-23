@@ -37,7 +37,7 @@ The application uses specific IDs to sync sidebar inputs with the artboard. Name
 ### Images & Textures
 
 - Export background images or textures from Figma as high-quality JPEGs or WebP.
-- Place them in `src/themes/[theme-name]/images/`.
+- Place them in `public/themes/[theme-name]/images/`.
 - Reference them in CSS: `background-image: url('./images/texture.jpg');`.
 
 ## 4. Translating Layout to CSS
@@ -61,13 +61,13 @@ The `#status-banner` is an absolute-positioned element. You can get creative wit
 
 Once your design is ready, follow these steps to add it to the app:
 
-1.  Create `src/themes/[theme-name]/`.
-2.  Create `template.html` in that folder (copy from an existing theme and adjust structure).
-3.  Create the three CSS files in `src/styles/[theme-name]/`:
-    - `[theme-name]-post.css`
-    - `[theme-name]-story.css`
-    - `[theme-name]-printA4.css`
-4.  Add the new theme option to the `<select id="theme-select">` in `index.html`.
+1.  Create `public/themes/[theme-name]/`.
+2.  Create `template.html` in that folder.
+3.  Create the three size-specific CSS files in that same folder:
+    - `[theme-id]-post.css`
+    - `[theme-id]-story.css`
+    - `[theme-id]-printA4.css`
+4.  Add the new theme entry to `public/themes/themes.json`.
 
 ---
 

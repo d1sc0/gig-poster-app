@@ -14,7 +14,7 @@ let currentSize = 'post'; // internal mapped size suffix
  */
 const initThemes = async () => {
   try {
-    const response = await fetch('/src/themes/themes.json');
+    const response = await fetch('/themes/themes.json');
     themesConfig = await response.json();
 
     const themeSelect = document.getElementById('theme-select');
@@ -39,33 +39,48 @@ const initThemes = async () => {
 };
 
 /**
- * Binds sidebar input fields to their corresponding display elements on the artboard.
- * This needs to be re-called whenever the theme template (HTML) is replaced.
- *
- * We use a mapping array to maintain the relationship between the ID of the
- * input field in the sidebar and the ID of the text element on the poster.
+ * Maps sidebar inputs to display IDs and sets up listeners once.
  */
-const bindTextInputs = () => {
-  const fieldMappings = [
-    { input: 'venue-input', display: 'venue-display' },
-    { input: 'town-input', display: 'town-display' },
-    { input: 'date-input', display: 'date-display' },
-    { input: 'start-time-input', display: 'start-time-display' },
-    { input: 'end-time-input', display: 'end-time-display' },
-    { input: 'postcode-input', display: 'postcode-display' },
-    { input: 'web-address-input', display: 'web-address-display' },
+const setupSidebarListeners = () => {
+  const fields = [
+    { id: 'venue-input', displayId: 'venue-display' },
+    { id: 'town-input', displayId: 'town-display' },
+    { id: 'date-input', displayId: 'date-display' },
+    { id: 'start-time-input', displayId: 'start-time-display' },
+    { id: 'end-time-input', displayId: 'end-time-display' },
+    { id: 'postcode-input', displayId: 'postcode-display' },
+    { id: 'web-address-input', displayId: 'web-address-display' },
   ];
 
-  fieldMappings.forEach(({ input, display }) => {
-    const inputEl = document.getElementById(input);
-    const displayEl = document.getElementById(display);
-    if (inputEl && displayEl) {
-      // Set initial value from input
-      if (inputEl.value) displayEl.textContent = inputEl.value;
+  fields.forEach(({ id, displayId }) => {
+    const input = document.getElementById(id);
+    input?.addEventListener('input', e => {
+      const display = document.getElementById(displayId);
+      if (display) display.textContent = e.target.value;
+    });
+  });
+};
 
-      inputEl.addEventListener('input', e => {
-        displayEl.textContent = e.target.value;
-      });
+/**
+ * Updates display elements with current input values (called after theme load).
+ */
+const syncDisplayValues = () => {
+  const inputs = [
+    'venue-input',
+    'town-input',
+    'date-input',
+    'start-time-input',
+    'end-time-input',
+    'postcode-input',
+    'web-address-input',
+  ];
+
+  inputs.forEach(id => {
+    const input = document.getElementById(id);
+    const displayId = id.replace('-input', '-display');
+    const display = document.getElementById(displayId);
+    if (input && display && input.value) {
+      display.textContent = input.value;
     }
   });
 };
@@ -146,7 +161,7 @@ const loadThemeAndSize = async (themeId, sizeValue) => {
 
   try {
     // 1. Load HTML Template
-    const response = await fetch(`/src/themes/${folder}/template.html`);
+    const response = await fetch(`/themes/${folder}/template.html`);
     const html = await response.text();
     themeRoot.innerHTML = html;
 
@@ -158,14 +173,14 @@ const loadThemeAndSize = async (themeId, sizeValue) => {
       themeStyle.rel = 'stylesheet';
       document.head.appendChild(themeStyle);
     }
-    themeStyle.href = `/src/themes/${folder}/${themeId}-${currentSize}.css`;
+    themeStyle.href = `/themes/${folder}/${themeId}-${currentSize}.css`;
 
     // 3. Update artboard class for global size styles
     artboard.className = `poster-canvas ${sizeValue}`;
     setBaseScale(sizeValue);
 
-    // 4. Re-bind inputs to new DOM elements
-    bindTextInputs();
+    // 4. Sync current input values to the new DOM template
+    syncDisplayValues();
     syncBannerState();
   } catch (err) {
     console.error('Failed to load theme:', err);
@@ -214,6 +229,7 @@ exportBtnMobile?.addEventListener('click', triggerExport);
 
 // Initial Load
 setupZoom();
+setupSidebarListeners();
 initThemes().then(() => {
   loadThemeAndSize(currentTheme, sizeSelect.value);
 });
