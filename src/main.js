@@ -10,6 +10,15 @@ let currentTheme = 'minimal';
 let currentSize = 'post'; // internal mapped size suffix
 
 /**
+ * IDs of elements that should be hidden if their corresponding input is empty.
+ */
+const optionalDisplayIds = [
+  'town-display',
+  'postcode-display',
+  'web-address-display',
+];
+
+/**
  * Asynchronously loads the theme configuration and populates the UI dropdown.
  */
 const initThemes = async () => {
@@ -70,12 +79,6 @@ const setupSidebarListeners = () => {
  * Updates display elements with current input values (called after theme load).
  */
 const syncDisplayValues = () => {
-  const optionalDisplayIds = [
-    'town-display',
-    'postcode-display',
-    'web-address-display',
-  ];
-
   const inputs = [
     'venue-input',
     'town-input',

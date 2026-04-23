@@ -1,5 +1,5 @@
 :root {
-  --sidebar-width: 340px;
+  --sidebar-width: 400px;
   --header-height: 100px; /* Increased to accommodate stacked mobile header */
   --ui-bg: #f8f9fa;
   --ui-border: #e5e7eb;
@@ -36,7 +36,7 @@ html {
 }
 
 .header-content h1 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin: 0 0 0.5rem 0;
 }
 
@@ -89,6 +89,7 @@ html {
 }
 
 .sidebar h1 {
+  display: none; /* Hide title in sidebar on mobile */
   font-size: 1.25rem;
   margin-bottom: 2rem;
 }
@@ -195,8 +196,15 @@ html {
     position: relative;
     top: 0;
     width: var(--sidebar-width);
+    flex-shrink: 0; /* Prevents the sidebar from shrinking when the artboard is large */
     transform: none !important;
     border-right: 1px solid var(--ui-border);
+  }
+
+  .sidebar h1 {
+    display: block; /* Hide title in sidebar on mobile */
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
   }
 
   .preview-area {

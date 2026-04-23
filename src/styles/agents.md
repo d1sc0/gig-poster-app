@@ -8,7 +8,7 @@ The application uses a modular templating approach where each visual theme is se
 
 ### Structure
 
-Each theme (e.g., `minimal`, `grunge`) has a dedicated directory under `public/themes/`. This ensures that templates and CSS can be fetched at runtime in production without being purged by Vite's build process.
+Each theme (e.g., `minimal`, `grunge`) has a dedicated directory under `public/themes/`. This ensures that templates and CSS are served as static assets and can be fetched at runtime in production without being processed or purged by Vite's build pipeline.
 
 ```
 src/
@@ -27,7 +27,9 @@ src/
 
 When a user selects a theme or changes the artboard size:
 
-- The `main.js` script fetches the theme registry from `themes.json` and then retrieves the corresponding `template.html` file, injecting its content into the `#theme-root` element.
+- The `main.js` script dynamically fetches the corresponding `template.html` file and injects its content into the `#theme-root` element on the canvas.
+- Simultaneously, it removes any previously loaded theme-specific CSS and injects the correct size-specific stylesheet (e.g., `minimal-post.css`) into the document's `<head>`.
+- This ensures that the poster's structure and styling are always appropriate for the selected theme and size.
 
 ## 2. Real-time Data Binding
 
@@ -35,13 +37,10 @@ The application implements real-time, two-way data binding between the input fie
 
 ### Mechanism
 
-- In `main.js`, event listeners are attached to the sidebar inputs **once** during initialization via `setupSidebarListeners`.
-- When a user types, the listener finds the current element in the active artboard and updates it.
-- `syncDisplayValues()` is called every time a theme is loaded to populate the new DOM elements with values currently held in the sidebar.
-
-### Optional Field Logic
-
-The 'Town', 'Postcode', and 'Web Address' fields are optional. If these inputs are empty (or contain only whitespace), the corresponding display elements on the artboard are automatically set to `display: none`.
+- Each editable field in the sidebar (e.g., 'Venue Name', 'Date') has a unique `id`.
+- Corresponding display elements on the poster canvas (within the `template.html` files) also have unique `id`s (e.g., `venue-display`, `date-display`).
+- In `main.js`, event listeners are attached to the input fields. Any change in an input field immediately updates the `textContent` of its corresponding display element on the canvas.
+- This binding is re-established (`bindTextInputs()` function) every time a new theme's HTML template is loaded, ensuring that the new template's elements are correctly linked to the input controls.
 
 ## 3. Dynamic Canvas and Aspect Ratios
 
