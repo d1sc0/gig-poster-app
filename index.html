@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slight Return Generator</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
+</head>
+
+<!-- The 'controls-hidden' class manages the toggle between editor and preview on mobile -->
+
+<body class="controls-hidden">
+  <header class="app-header">
+    <div class="header-content">
+      <h1>SlightReturn Socials Generator</h1>
+      <!-- Mobile-only actions -->
+      <div class="header-actions">
+        <button id="toggle-controls" class="header-toggle-btn">Toggle Editor</button>
+        <button id="export-btn-mobile" class="header-export-btn">Download</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="app" class="main-layout">
+    <!-- Sidebar: Contains all user configuration inputs -->
+    <aside class="sidebar">
+
+      <section class="control-group">
+        <h3>1. Select Size</h3>
+        <select id="artboard-size-select">
+          <option value="insta-post">Instagram Post (4:5)</option>
+          <option value="insta-story">Instagram Story (9:16)</option>
+          <option value="a4-print">A4 Print (300 DPI)</option>
+        </select>
+      </section>
+
+      <section class="control-group">
+        <h3>2. Select Theme</h3>
+        <!-- Populated dynamically from themes.json -->
+        <select id="theme-select"></select>
+      </section>
+
+      <section class="control-group">
+        <h3>3. Gig Details</h3>
+        <input type="text" id="venue-input" placeholder="Venue Name">
+        <input type="text" id="town-input" placeholder="Town">
+        <input type="text" id="postcode-input" placeholder="Venue Postcode">
+        <input type="text" id="web-address-input" placeholder="Website / Tickets URL">
+        <input type="text" id="date-input" placeholder="Gig Date">
+        <div class="split-input">
+          <input type="text" id="start-time-input" placeholder="Starts">
+          <input type="text" id="end-time-input" placeholder="Ends">
+        </div>
+      </section>
+
+      <section class="control-group">
+        <h3>4. Optional Banner Control</h3>
+        <input type="text" id="banner-text-input" placeholder="Banner Text (e.g. TONIGHT or SOLD OUT)">
+        <label class="checkbox-label">
+          <input type="checkbox" id="banner-toggle"> Show Update Banner
+        </label>
+      </section>
+
+      <button id="export-btn" class="primary-btn">Download High-Res PNG</button>
+    </aside>
+
+    <!-- Preview Area: Handles the scaled representation of the high-res artboard -->
+    <main class="preview-area">
+      <!-- Floating Zoom Controls: Linked to CSS variables for scaling -->
+      <div class="preview-zoom-container">
+        <label for="zoom-slider">Zoom</label>
+        <input type="range" id="zoom-slider" min="0.5" max="3.0" step="0.01" value="1.0">
+        <span id="zoom-value">100%</span>
+      </div>
+
+      <div id="poster-artboard" class="poster-canvas insta-post">
+        <!-- Theme HTML will be injected here -->
+        <div id="theme-root" class="poster-content"></div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+.poster-canvas {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 100px;
+  box-sizing: border-box;
+}
+
+#band-name-display {
+  font-family: 'Impact', sans-serif;
+  font-size: 180px;
+  color: #fff;
+  background: #ff4d00;
+  padding: 0 20px;
+  margin-bottom: 40px;
+  transform: skewY(-5deg);
+}
+
+.details-wrap {
+  border: 5px solid #ff4d00;
+  padding: 30px;
+  width: 100%;
+}
+
+.details-wrap p {
+  font-size: 42px;
+  margin: 10px 0;
+  font-weight: 900;
+  color: #ff4d00;
+}
+
+#venue-display {
+  color: #fff;
+  font-size: 70px;
+  text-decoration: underline;
+}
+
+.banner {
+  position: absolute;
+  padding: 20px;
+  text-align: center;
+  z-index: 10;
+  background: #fff;
+  color: #000;
+  width: 100%;
+  left: 0;
+  font-size: 100px;
+  font-weight: 900;
+  text-transform: uppercase;
+  top: 20%;
+}

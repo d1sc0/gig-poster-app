@@ -1,0 +1,56 @@
+.poster-canvas {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 250px;
+  box-sizing: border-box;
+  background: white;
+}
+
+#band-name-display {
+  font-size: 380px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 0.8;
+}
+
+.details-wrap {
+  border-top: 12px solid #000;
+  padding-top: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+}
+
+.details-wrap p {
+  margin: 0;
+  font-size: 80px;
+  text-transform: uppercase;
+}
+
+#venue-display {
+  font-weight: 700;
+  grid-column: span 2;
+  font-size: 120px;
+}
+
+#town-display {
+  grid-column: span 2;
+  font-size: 90px;
+}
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  background: #000;
+  color: #fff;
+  font-size: 140px;
+  padding: 80px;
+}

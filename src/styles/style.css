@@ -1,0 +1,218 @@
+:root {
+  --sidebar-width: 340px;
+  --header-height: 60px;
+  --ui-bg: #f8f9fa;
+  --ui-border: #e5e7eb;
+  --accent: #2563eb;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Mobile Header */
+.app-header {
+  height: var(--header-height);
+  background: white;
+  border-bottom: 1px solid var(--ui-border);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: 100%;
+}
+
+.header-content h1 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.header-export-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.header-toggle-btn {
+  background: #f3f4f6;
+  border: 1px solid var(--ui-border);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Sidebar - Mobile Default (Overlay) */
+.sidebar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 900;
+  box-sizing: border-box; /* Ensure padding is included in the fixed height */
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+.controls-hidden .sidebar {
+  transform: translateX(-100%);
+}
+
+.sidebar h1 {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.control-group {
+  margin-bottom: 2rem;
+}
+.control-group h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.sidebar input[type='text'],
+.sidebar select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+
+.split-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.primary-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.preview-area {
+  margin-top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 20px;
+  position: relative;
+}
+
+.preview-zoom-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 50px;
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  border: 1px solid var(--ui-border);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.controls-hidden .preview-zoom-container {
+  display: flex;
+}
+
+/* Artboard Definitions */
+.poster-canvas {
+  background: white;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  /* 
+     Final scale combines the base scale (to fit screen) 
+     with the user's manual zoom level 
+  */
+  transform: scale(calc(var(--base-scale, 0.2) * var(--user-zoom, 1)));
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+/* Desktop Overrides */
+@media (min-width: 1024px) {
+  .app-header {
+    display: none;
+  }
+
+  #app {
+    display: flex;
+    height: 100vh;
+  }
+
+  .sidebar {
+    position: relative;
+    top: 0;
+    width: var(--sidebar-width);
+    transform: none !important;
+    border-right: 1px solid var(--ui-border);
+  }
+
+  .preview-area {
+    margin-top: 0;
+    height: 100vh;
+  }
+  .poster-canvas {
+    /* Already uses CSS variables */
+  }
+}
+
+.insta-post {
+  width: 1080px;
+  height: 1350px;
+}
+.insta-story {
+  width: 1080px;
+  height: 1920px;
+}
+.a4-print {
+  width: 2480px;
+  height: 3508px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

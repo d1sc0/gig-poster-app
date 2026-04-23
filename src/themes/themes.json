@@ -1,0 +1,12 @@
+[
+  {
+    "id": "minimal",
+    "name": "Minimalist Clean",
+    "folder": "minimal"
+  },
+  {
+    "id": "grunge",
+    "name": "Grunge Rock",
+    "folder": "grunge"
+  }
+]

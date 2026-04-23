@@ -1,0 +1,41 @@
+import * as htmlToImage from 'html-to-image';
+
+/**
+ * Captures the specified DOM element and triggers a browser download as a PNG.
+ *
+ * Technical Note: Even though the artboard is visually scaled down in the browser
+ * using CSS transforms, this function captures it at its full defined pixel resolution
+ * by temporarily overriding styles during the snapshot process.
+ */
+export function savePoster(elementId) {
+  const node = document.getElementById(elementId);
+
+  // Get the raw dimensions defined in CSS (e.g. 1080px or 2480px)
+  // (e.g. 1080px) before the preview scale is applied.
+  const width = node.offsetWidth;
+  const height = node.offsetHeight;
+
+  htmlToImage
+    .toPng(node, {
+      skipFonts: true,
+      width: width,
+      height: height,
+      // We reset the transform to 'none' here so the exported image
+      // is rendered at 100% size, ignoring the preview zoom.
+      style: {
+        transform: 'none', // Reset the preview scale for the snapshot
+        margin: '0',
+        left: '0',
+        top: '0',
+      },
+    })
+    .then(dataUrl => {
+      const link = document.createElement('a');
+      link.download = `poster-${Date.now()}.png`;
+      link.href = dataUrl;
+      link.click();
+    })
+    .catch(error => {
+      console.error('Export failed:', error);
+    });
+}
