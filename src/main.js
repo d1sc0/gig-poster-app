@@ -56,7 +56,12 @@ const setupSidebarListeners = () => {
     const input = document.getElementById(id);
     input?.addEventListener('input', e => {
       const display = document.getElementById(displayId);
-      if (display) display.textContent = e.target.value;
+      if (display) {
+        display.textContent = e.target.value;
+        if (optionalDisplayIds.includes(displayId)) {
+          display.style.display = e.target.value.trim() ? '' : 'none';
+        }
+      }
     });
   });
 };
@@ -65,6 +70,12 @@ const setupSidebarListeners = () => {
  * Updates display elements with current input values (called after theme load).
  */
 const syncDisplayValues = () => {
+  const optionalDisplayIds = [
+    'town-display',
+    'postcode-display',
+    'web-address-display',
+  ];
+
   const inputs = [
     'venue-input',
     'town-input',
@@ -79,8 +90,11 @@ const syncDisplayValues = () => {
     const input = document.getElementById(id);
     const displayId = id.replace('-input', '-display');
     const display = document.getElementById(displayId);
-    if (input && display && input.value) {
+    if (input && display) {
       display.textContent = input.value;
+      if (optionalDisplayIds.includes(displayId)) {
+        display.style.display = input.value.trim() ? '' : 'none';
+      }
     }
   });
 };
