@@ -1,7 +1,7 @@
 .poster-canvas {
   font-family: 'Impact', 'Arial', sans-serif;
   color: #000;
-  background: url('./images/mono-background.png') no-repeat center center;
+  background-image: url('/themes/simple-mono/images/mono-background.png');
   background-size: cover;
   background-attachment: fixed;
 }
