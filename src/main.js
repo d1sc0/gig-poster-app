@@ -341,6 +341,15 @@ document
     this.textContent = isHidden ? 'Toggle Editor' : 'Toggle Preview';
   });
 
+// Sidebar Preview Button: Specifically for closing the editor
+document
+  .querySelector('[data-action="preview"]')
+  ?.addEventListener('click', function () {
+    document.body.classList.add('controls-hidden');
+    const toggleBtn = document.querySelector('[data-action="toggle-editor"]');
+    if (toggleBtn) toggleBtn.textContent = 'Toggle Editor';
+  });
+
 // Export Triggers
 const triggerExport = () => {
   const venue = document.querySelector('[data-field="venue"]')?.value || '';

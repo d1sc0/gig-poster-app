@@ -250,6 +250,10 @@ html {
     display: none !important; /* Ensure mobile header is hidden on desktop */
   }
 
+  .controls-hidden .app-header {
+    display: block !important; /* Show header on desktop when editor is closed */
+  }
+
   [data-ui='app-layout'] {
     display: flex;
     height: 100vh;
@@ -260,8 +264,15 @@ html {
     top: 0;
     width: var(--sidebar-width);
     flex-shrink: 0;
-    transform: none !important;
     border-right: 1px solid var(--ui-border);
+    transition:
+      transform 0.3s ease,
+      margin-left 0.3s ease;
+  }
+
+  .controls-hidden .sidebar {
+    transform: translateX(-100%);
+    margin-left: calc(var(--sidebar-width) * -1);
   }
 
   .preview-area {
