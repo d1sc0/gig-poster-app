@@ -1,4 +1,4 @@
-import { domToPng } from 'modern-screenshot';
+import { domToBlob } from 'modern-screenshot';
 
 /**
  * Captures the specified DOM element and triggers a browser download as a PNG.
@@ -39,12 +39,16 @@ export function savePoster(node, themeId, sizeValue, venue, date) {
 
   const filename = `${formattedSize}-${formattedVenue}-${formattedDate}.png`;
 
-  domToPng(node, {
-    // If your background images still fail, try toggling this to true,
-    // but modern-screenshot often works better with it off.
+  // On mobile, high-DPI screens (Retina) try to upscale A4 to massive sizes.
+  // We cap the scale to 1 for A4 to prevent memory crashes on mobile devices.
+  const isA4 = sizeValue === 'a4-print';
+  const exportScale = isA4 ? 1 : window.devicePixelRatio || 1;
+
+  domToBlob(node, {
     cacheBust: false,
     width: width,
     height: height,
+    scale: exportScale,
     // We reset the transform to 'none' here so the exported image
     // is rendered at 100% size, ignoring the preview zoom.
     style: {
@@ -54,11 +58,14 @@ export function savePoster(node, themeId, sizeValue, venue, date) {
       top: '0',
     },
   })
-    .then(dataUrl => {
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.download = filename;
-      link.href = dataUrl;
+      link.href = url;
       link.click();
+      // Clean up the object URL to free up memory
+      setTimeout(() => URL.revokeObjectURL(url), 100);
     })
     .catch(error => {
       console.error('Export failed:', error);
