@@ -112,15 +112,36 @@ html {
   padding: 0.8rem; /* Increased padding for better touch precision */
   font-size: 1rem; /* Prevents iOS auto-zoom on focus and improves legibility */
   font-family: inherit; /* Ensures consistent typography */
+  background-color: white; /* Ensure white background, especially on iOS */
   border: 1px solid #d1d5db;
   border-radius: 4px;
   margin-bottom: 0.75rem;
   box-sizing: border-box;
+  -webkit-appearance: none; /* Remove default iOS styling */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Specific styling for date and time inputs to add icons */
+.sidebar input[type='date'] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M19 4h-3V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM5 7V6h14v1H5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.2rem;
+  padding-right: 2.5rem; /* Make space for the icon */
+}
+
+.sidebar input[type='time'] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.2rem;
+  padding-right: 2.5rem; /* Make space for the icon */
 }
 
 .split-input {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem; /* Slightly increased gap for better spacing */
 }
 
 .primary-btn {
