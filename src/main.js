@@ -1,9 +1,9 @@
 import { savePoster } from './utils/renderer';
 
-const artboard = document.getElementById('poster-artboard');
-const themeRoot = document.getElementById('theme-root');
-const exportBtn = document.getElementById('export-btn');
-const exportBtnMobile = document.getElementById('export-btn-mobile');
+const artboard = document.querySelector('[data-ui="poster-artboard"]');
+const themeRoot = document.querySelector('[data-ui="theme-root"]');
+const exportBtn = document.querySelector('[data-action="export"]');
+const exportBtnMobile = document.querySelector('[data-action="export-mobile"]');
 
 let themesConfig = [];
 let currentTheme = 'minimal';
@@ -12,11 +12,7 @@ let currentSize = 'post'; // internal mapped size suffix
 /**
  * IDs of elements that should be hidden if their corresponding input is empty.
  */
-const optionalDisplayIds = [
-  'town-display',
-  'postcode-display',
-  'web-address-display',
-];
+const optionalDisplayIds = ['town', 'postcode', 'web-address'];
 
 /**
  * Asynchronously loads the theme configuration and populates the UI dropdown.
@@ -26,7 +22,7 @@ const initThemes = async () => {
     const response = await fetch('/themes/themes.json');
     themesConfig = await response.json();
 
-    const themeSelect = document.getElementById('theme-select');
+    const themeSelect = document.querySelector('[data-config="theme"]');
     if (themeSelect) {
       themeSelect.innerHTML = ''; // Clear fallback options
       themesConfig.forEach(theme => {
@@ -51,23 +47,22 @@ const initThemes = async () => {
  * Maps sidebar inputs to display IDs and sets up listeners once.
  */
 const setupSidebarListeners = () => {
-  const fields = [
-    { id: 'venue-input', displayId: 'venue-display' },
-    { id: 'town-input', displayId: 'town-display' },
-    { id: 'date-input', displayId: 'date-display' },
-    { id: 'start-time-input', displayId: 'start-time-display' },
-    { id: 'end-time-input', displayId: 'end-time-display' },
-    { id: 'postcode-input', displayId: 'postcode-display' },
-    { id: 'web-address-input', displayId: 'web-address-display' },
-  ];
+  const inputs = document.querySelectorAll('aside.sidebar [data-field]');
 
-  fields.forEach(({ id, displayId }) => {
-    const input = document.getElementById(id);
+  inputs.forEach(input => {
     input?.addEventListener('input', e => {
-      const display = document.getElementById(displayId);
+      const fieldName = input.dataset.field;
+
+      // Special handling for the banner which doesn't follow the "-display" suffix convention
+      if (fieldName === 'banner-text' || fieldName === 'banner-toggle') {
+        syncBannerState();
+        return;
+      }
+
+      const display = themeRoot.querySelector(`[data-display="${fieldName}"]`);
       if (display) {
         display.textContent = e.target.value;
-        if (optionalDisplayIds.includes(displayId)) {
+        if (optionalDisplayIds.includes(fieldName)) {
           display.style.display = e.target.value.trim() ? '' : 'none';
         }
       }
@@ -79,23 +74,15 @@ const setupSidebarListeners = () => {
  * Updates display elements with current input values (called after theme load).
  */
 const syncDisplayValues = () => {
-  const inputs = [
-    'venue-input',
-    'town-input',
-    'date-input',
-    'start-time-input',
-    'end-time-input',
-    'postcode-input',
-    'web-address-input',
-  ];
+  const inputs = document.querySelectorAll('aside.sidebar [data-field]');
 
-  inputs.forEach(id => {
-    const input = document.getElementById(id);
-    const displayId = id.replace('-input', '-display');
-    const display = document.getElementById(displayId);
+  inputs.forEach(input => {
+    const fieldName = input.dataset.field;
+    const display = themeRoot.querySelector(`[data-display="${fieldName}"]`);
+
     if (input && display) {
       display.textContent = input.value;
-      if (optionalDisplayIds.includes(displayId)) {
+      if (optionalDisplayIds.includes(fieldName)) {
         display.style.display = input.value.trim() ? '' : 'none';
       }
     }
@@ -108,8 +95,8 @@ const syncDisplayValues = () => {
  * users to inspect details without affecting the internal pixel math of the export.
  */
 const setupZoom = () => {
-  const zoomSlider = document.getElementById('zoom-slider');
-  const zoomValue = document.getElementById('zoom-value');
+  const zoomSlider = document.querySelector('[data-ui="zoom-slider"]');
+  const zoomValue = document.querySelector('[data-ui="zoom-value"]');
 
   if (zoomSlider && artboard) {
     zoomSlider.addEventListener('input', e => {
@@ -141,9 +128,9 @@ const setBaseScale = sizeValue => {
  * the banner correctly persists its visibility and text content.
  */
 const syncBannerState = () => {
-  const bannerToggle = document.getElementById('banner-toggle');
-  const bannerTextInput = document.getElementById('banner-text-input');
-  const bannerElement = document.getElementById('status-banner');
+  const bannerToggle = document.querySelector('[data-field="banner-toggle"]');
+  const bannerTextInput = document.querySelector('[data-field="banner-text"]');
+  const bannerElement = themeRoot.querySelector('[data-display="banner"]');
 
   if (bannerElement) {
     if (bannerToggle) {
@@ -190,7 +177,8 @@ const loadThemeAndSize = async (themeId, sizeValue) => {
       themeStyle.rel = 'stylesheet';
       document.head.appendChild(themeStyle);
     }
-    themeStyle.href = `/themes/${folder}/${themeId}-${currentSize}.css`;
+    // Added a cache-buster (?t=) to ensure images and styles refresh immediately
+    themeStyle.href = `/themes/${folder}/${themeId}-${currentSize}.css?t=${Date.now()}`;
 
     // 3. Update artboard class for global size styles
     artboard.className = `poster-canvas ${sizeValue}`;
@@ -206,8 +194,8 @@ const loadThemeAndSize = async (themeId, sizeValue) => {
 
 // --- UI Event Listeners ---
 
-const sizeSelect = document.getElementById('artboard-size-select');
-const themeSelect = document.getElementById('theme-select');
+const sizeSelect = document.querySelector('[data-config="size"]');
+const themeSelect = document.querySelector('[data-config="theme"]');
 
 // Size Switcher
 sizeSelect?.addEventListener('change', e => {
@@ -219,21 +207,9 @@ themeSelect?.addEventListener('change', e => {
   loadThemeAndSize(e.target.value, sizeSelect.value);
 });
 
-// Banner visibility toggle
-document.getElementById('banner-toggle')?.addEventListener('change', e => {
-  document.getElementById('status-banner').style.display = e.target.checked
-    ? 'flex'
-    : 'none';
-});
-
-// Banner text update
-document.getElementById('banner-text-input')?.addEventListener('input', e => {
-  document.getElementById('status-banner').textContent = e.target.value;
-});
-
 // Mobile UI: Toggle between Editor (Sidebar) and Preview (Canvas)
 document
-  .getElementById('toggle-controls')
+  .querySelector('[data-action="toggle-editor"]')
   ?.addEventListener('click', function () {
     const isHidden = document.body.classList.toggle('controls-hidden');
     this.textContent = isHidden ? 'Toggle Editor' : 'Toggle Preview';

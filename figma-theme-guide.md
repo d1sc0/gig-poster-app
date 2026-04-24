@@ -70,5 +70,3 @@ Once your design is ready, follow these steps to add it to the app:
 4.  Add the new theme entry to `public/themes/themes.json`.
 
 ---
-
-_Tip: Use Figma's **Dev Mode** to quickly inspect and copy values for border-radius, drop-shadows, and complex gradients._

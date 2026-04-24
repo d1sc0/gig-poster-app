@@ -10,53 +10,63 @@
   background: white;
 }
 
-#band-name-display {
-  font-size: 160px;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin: 0;
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.band-name {
+  font-size: 140px;
   line-height: 0.9;
-}
-
-.details-wrap {
-  border-top: 4px solid #000;
-  padding-top: 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.details-wrap p {
   margin: 0;
-  font-size: 32px;
-  font-weight: 400;
   text-transform: uppercase;
+  font-weight: 900;
 }
 
-#venue-display {
+.venue-info {
+  margin-top: 40px;
+}
+
+.venue {
+  font-size: 60px;
   font-weight: 700;
-  grid-column: span 2;
-  font-size: 48px;
+  margin: 0;
 }
 
-#town-display {
-  grid-column: span 2;
-  font-weight: 500;
-  font-size: 36px;
-  margin-top: -15px;
+.town,
+.postcode {
+  font-size: 32px;
+  margin: 5px 0;
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.url {
+  font-size: 24px;
+  margin-top: 20px;
+  opacity: 0.6;
+}
+
+.date {
+  font-size: 80px;
+  font-weight: 700;
+  border-top: 5px solid #000;
+  padding-top: 20px;
+}
+
+.times {
+  font-size: 40px;
+  font-weight: 400;
 }
 
 .banner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  z-index: 10;
   background: #000;
   color: #fff;
-  font-size: 60px;
+  padding: 20px;
+  font-size: 40px;
   font-weight: 900;
-  letter-spacing: 0.5em;
-  padding: 30px;
+  text-align: center;
 }
