@@ -1,12 +1,37 @@
 [
   {
-    "id": "minimal",
-    "name": "Minimalist Clean",
-    "folder": "minimal"
+    "_help": "dateOptions/timeOptions use Intl.DateTimeFormat. Templates use {type} placeholders (e.g., {day}, {month}, {hour}, {dayPeriod}). removeLeadingZeros strips '0' from numeric parts.",
+    "dateOptions_available": {
+      "weekday": ["long", "short", "narrow"],
+      "month": ["numeric", "2-digit", "long", "short", "narrow"],
+      "day": ["numeric", "2-digit"],
+      "year": ["numeric", "2-digit"]
+    },
+    "timeOptions_available": {
+      "hour": ["numeric", "2-digit"],
+      "minute": ["numeric", "2-digit"],
+      "hour12": [true, false]
+    },
+    "template_example": "{weekday} @ {day} {month}"
   },
   {
-    "id": "funky",
-    "name": "Funky",
-    "folder": "funky"
+    "id": "minimal",
+    "name": "Typography 1",
+    "folder": "minimal",
+    "dateOptions": { "weekday": "long", "day": "numeric", "month": "short" },
+    "dateTemplate": "{weekday}, {day} {month}",
+    "timeOptions": { "hour": "2-digit", "minute": "2-digit", "hour12": false },
+    "timeTemplate": "{hour}:{minute}"
+  },
+  {
+    "id": "simple-mono",
+    "name": "Simple Mono",
+    "folder": "simple-mono",
+    "default": true,
+    "removeLeadingZeros": true,
+    "dateOptions": { "weekday": "short", "month": "short", "year": "2-digit" },
+    "dateTemplate": "{weekday} {month} {year}",
+    "timeOptions": { "hour": "2-digit", "minute": "2-digit", "hour12": true },
+    "timeTemplate": "{hour} {dayPeriod}"
   }
 ]

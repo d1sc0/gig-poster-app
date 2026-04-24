@@ -105,10 +105,13 @@ html {
 }
 
 .sidebar input[type='text'],
+.sidebar input[type='date'],
+.sidebar input[type='time'],
 .sidebar select {
   width: 100%;
   padding: 0.8rem; /* Increased padding for better touch precision */
   font-size: 1rem; /* Prevents iOS auto-zoom on focus and improves legibility */
+  font-family: inherit; /* Ensures consistent typography */
   border: 1px solid #d1d5db;
   border-radius: 4px;
   margin-bottom: 0.75rem;

@@ -1,0 +1,96 @@
+.poster-canvas {
+  font-family: 'Impact', 'Arial', sans-serif;
+  color: #000;
+  background: url('./images/mono-background.png') no-repeat center center;
+  background-size: cover;
+}
+
+.container {
+  background: #000;
+  opacity: 0.6;
+  position: absolute;
+  left: -6px;
+  top: 623px; /* Shifted down for the taller ratio */
+  width: 1088px;
+  height: 502px;
+}
+
+.container2 {
+  background: #000;
+  opacity: 0.6;
+  position: absolute;
+  left: -6px;
+  top: 1684px; /* Footer moved to the bottom */
+  width: 1088px;
+  height: 236px;
+}
+
+.band-name {
+  position: absolute;
+  top: 532px;
+  font-size: 150px;
+  width: 1080px;
+  color: rgb(254, 254, 254);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.venue {
+  position: absolute;
+  top: 665px;
+  font-size: 150px;
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.date {
+  position: absolute;
+  top: 915px;
+  font-size: 60px;
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.times {
+  position: absolute;
+  top: 1040px;
+  font-size: 60px;
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.location {
+  position: absolute;
+  top: 1720px;
+  font-size: 60px;
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.url {
+  position: absolute;
+  top: 1780px;
+  font-size: 60px;
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+}
+
+.banner {
+  position: absolute;
+  top: 1139px;
+  width: 1080px;
+  background: rgb(252, 11, 11);
+  color: rgb(254, 254, 254);
+  font-size: 120px;
+  padding: 20px 0;
+  text-align: center;
+}

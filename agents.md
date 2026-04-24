@@ -38,6 +38,49 @@ The application implements real-time, two-way data binding between the input fie
 - In `main.js`, event listeners are attached to the sidebar inputs **once** during initialization via `setupSidebarListeners`.
 - When a user types, the listener finds the current element in the active artboard and updates it.
 - `syncDisplayValues()` is called every time a theme is loaded to populate the new DOM elements with values currently held in the sidebar.
+  - Date and time inputs are automatically formatted using the active theme's configuration before rendering.
+
+### Date and Time Formatting
+
+Themes can customize how the native HTML date and time pickers are presented on the canvas using `dateOptions`/`timeOptions` and optional `dateTemplate`/`timeTemplate` strings in `public/themes/themes.json`.
+
+The templates use a placeholder syntax where `{type}` corresponds to the keys returned by the JavaScript `Intl` engine.
+
+#### Configuration Examples
+
+**1. Minimalist (Long form)**
+
+```json
+"dateOptions": { "weekday": "long", "day": "numeric", "month": "short" },
+"dateTemplate": "{weekday}, {day} {month}",
+"timeOptions": { "hour": "2-digit", "minute": "2-digit", "hour12": false }
+// Poster Display: "Monday, 24 Oct" | "19:00"
+```
+
+**2. Funky (Compact/US style)**
+
+```json
+"dateOptions": { "day": "2-digit", "month": "2-digit", "year": "2-digit" },
+"timeOptions": { "hour": "numeric", "minute": "2-digit", "hour12": true }
+// Poster Display: "10/24/23" | "7:00 PM"
+```
+
+**3. Simple Mono (Narrow)**
+
+```json
+"dateOptions": { "day": "numeric", "month": "narrow" }
+// Poster Display: "24 O"
+```
+
+#### Supported Values
+
+Common fields include `weekday`, `year`, `month`, and `day`. Valid values for these include:
+
+- `"numeric"` (e.g., 2023, 24)
+- `"2-digit"` (e.g., 23, 01)
+- `"long"` (e.g., October, Monday)
+- `"short"` (e.g., Oct, Mon)
+- `"narrow"` (e.g., O, M)
 
 ### Optional Field Logic
 

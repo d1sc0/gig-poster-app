@@ -1,0 +1,107 @@
+.poster-canvas {
+  font-family: 'Impact', 'Arial', sans-serif;
+  color: #000;
+  background: url('./images/mono-background.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.container {
+  background: #000;
+  opacity: 0.6;
+  position: absolute;
+  left: -6px;
+  top: 423px;
+  width: 1088px;
+  height: 502px;
+}
+
+.container2 {
+  background: #000;
+  opacity: 0.6;
+  position: absolute;
+  left: -6px;
+  top: 1114px;
+  width: 1088px;
+  height: 236px;
+}
+
+.band-name {
+  position: absolute;
+  top: 332px;
+  font-size: 150px;
+  width: 1080px;
+  font-family: 'Impact';
+  color: rgb(254, 254, 254);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.venue {
+  position: absolute;
+  top: 465px;
+  font-size: 150px;
+  font-family: 'Impact';
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.date {
+  position: absolute;
+  top: 715px;
+  font-size: 60px;
+  font-family: 'Impact';
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.times {
+  position: absolute;
+  top: 840px;
+  font-size: 60px;
+  font-family: 'Impact';
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.location {
+  position: absolute;
+  top: 1150px;
+  font-size: 60px;
+  font-family: 'Impact';
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.url {
+  position: absolute;
+  top: 1180px;
+  font-size: 60px;
+  font-family: 'Impact';
+  color: rgb(254, 254, 254);
+  width: 1080px;
+  text-align: center;
+}
+
+.banner {
+  position: absolute;
+  top: 939px;
+  width: 1080px;
+  background: rgb(252, 11, 11);
+  color: rgb(254, 254, 254);
+  font-size: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-family: 'Impact';
+  text-align: center;
+}

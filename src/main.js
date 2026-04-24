@@ -15,6 +15,108 @@ let currentSize = 'post'; // internal mapped size suffix
 const optionalDisplayIds = ['town', 'postcode', 'web-address'];
 
 /**
+ * Key used for local storage persistence.
+ */
+const STORAGE_KEY = 'gig_poster_data';
+
+/**
+ * Resolves a template string by replacing placeholders with formatted date parts.
+ */
+const resolveTemplate = (
+  date,
+  options,
+  template,
+  isTime = false,
+  config = {},
+) => {
+  const formatter = new Intl.DateTimeFormat(undefined, options);
+
+  if (!template) {
+    return isTime
+      ? date.toLocaleTimeString(undefined, options)
+      : date.toLocaleDateString(undefined, options);
+  }
+
+  const parts = formatter.formatToParts(date);
+  const values = {};
+
+  parts.forEach(({ type, value }) => {
+    let displayValue = value;
+    if (config.removeLeadingZeros && ['hour', 'day', 'month'].includes(type)) {
+      displayValue =
+        value.startsWith('0') && value.length > 1 ? value.substring(1) : value;
+    }
+    values[type] = displayValue;
+  });
+
+  return template.replace(/{(\w+)}/g, (match, type) => {
+    return values[type] !== undefined ? values[type] : match;
+  });
+};
+
+/**
+ * Formats raw input values based on the current theme configuration.
+ */
+const getFormattedValue = (fieldName, value) => {
+  if (!value) return value;
+  const config = themesConfig.find(t => t.id === currentTheme);
+
+  try {
+    if (fieldName === 'date') {
+      const [y, m, d] = value.split('-').map(Number);
+      return resolveTemplate(
+        new Date(y, m - 1, d),
+        config?.dateOptions || {},
+        config?.dateTemplate,
+        false,
+        config,
+      );
+    }
+    if (fieldName === 'start-time' || fieldName === 'end-time') {
+      const [h, min] = value.split(':').map(Number);
+      const date = new Date();
+      date.setHours(h, min);
+      const defaultOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      };
+      return resolveTemplate(
+        date,
+        config?.timeOptions || defaultOptions,
+        config?.timeTemplate,
+        true,
+        config,
+      );
+    }
+  } catch (e) {
+    console.error('Formatting error:', e);
+  }
+  return value;
+};
+
+/**
+ * Restores input values from local storage.
+ */
+const loadPersistedData = () => {
+  try {
+    const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    Object.entries(savedData).forEach(([fieldName, value]) => {
+      const input = document.querySelector(`[data-field="${fieldName}"]`);
+      if (input) {
+        if (input.type === 'checkbox') {
+          input.checked = value;
+        } else {
+          input.value = value;
+        }
+      }
+    });
+  } catch (err) {
+    console.error('Failed to load persisted data:', err);
+  }
+};
+
+/**
  * Asynchronously loads the theme configuration and populates the UI dropdown.
  */
 const initThemes = async () => {
@@ -25,16 +127,25 @@ const initThemes = async () => {
     const themeSelect = document.querySelector('[data-config="theme"]');
     if (themeSelect) {
       themeSelect.innerHTML = ''; // Clear fallback options
-      themesConfig.forEach(theme => {
-        const option = document.createElement('option');
-        option.value = theme.id;
-        option.textContent = theme.name;
-        themeSelect.appendChild(option);
-      });
+      themesConfig
+        .filter(t => t && t.id)
+        .forEach(t => {
+          const option = document.createElement('option');
+          option.value = t.id;
+          option.textContent = t.name;
+          themeSelect.appendChild(option);
+        });
 
-      // Default to the first theme in the config
-      if (themesConfig.length > 0) {
-        currentTheme = themesConfig[0].id;
+      // Precedence: Local Storage > Config Default > First Entry
+      const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const validThemes = themesConfig.filter(t => t && t.id);
+      const defaultTheme =
+        validThemes.find(t => t.id === savedData.theme) ||
+        validThemes.find(t => t.default) ||
+        validThemes[0];
+
+      if (defaultTheme) {
+        currentTheme = defaultTheme.id;
         themeSelect.value = currentTheme;
       }
     }
@@ -48,25 +159,34 @@ const initThemes = async () => {
  */
 const setupSidebarListeners = () => {
   const inputs = document.querySelectorAll('aside.sidebar [data-field]');
+  const updateHandler = e => {
+    const input = e.target;
+    const fieldName = input.dataset.field;
+    const value = input.type === 'checkbox' ? input.checked : input.value;
 
-  inputs.forEach(input => {
-    input?.addEventListener('input', e => {
-      const fieldName = input.dataset.field;
+    // Persist to local storage
+    const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    savedData[fieldName] = value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
 
-      // Special handling for the banner which doesn't follow the "-display" suffix convention
-      if (fieldName === 'banner-text' || fieldName === 'banner-toggle') {
-        syncBannerState();
-        return;
-      }
-
+    // Special handling for the banner which doesn't follow the "-display" suffix convention
+    if (fieldName === 'banner-text' || fieldName === 'banner-toggle') {
+      syncBannerState();
+    } else {
       const display = themeRoot.querySelector(`[data-display="${fieldName}"]`);
       if (display) {
-        display.textContent = e.target.value;
+        display.textContent = getFormattedValue(fieldName, input.value);
         if (optionalDisplayIds.includes(fieldName)) {
-          display.style.display = e.target.value.trim() ? '' : 'none';
+          display.style.display = input.value.trim() ? '' : 'none';
         }
       }
-    });
+    }
+  };
+
+  inputs.forEach(input => {
+    // Listen for both input (real-time typing) and change (checkboxes/date-pickers)
+    input?.addEventListener('input', updateHandler);
+    input?.addEventListener('change', updateHandler);
   });
 };
 
@@ -81,7 +201,7 @@ const syncDisplayValues = () => {
     const display = themeRoot.querySelector(`[data-display="${fieldName}"]`);
 
     if (input && display) {
-      display.textContent = input.value;
+      display.textContent = getFormattedValue(fieldName, input.value);
       if (optionalDisplayIds.includes(fieldName)) {
         display.style.display = input.value.trim() ? '' : 'none';
       }
@@ -134,7 +254,7 @@ const syncBannerState = () => {
 
   if (bannerElement) {
     if (bannerToggle) {
-      bannerElement.style.display = bannerToggle.checked ? 'flex' : 'none';
+      bannerElement.style.display = bannerToggle.checked ? 'block' : 'none';
     }
     if (bannerTextInput && bannerTextInput.value) {
       bannerElement.textContent = bannerTextInput.value;
@@ -162,6 +282,12 @@ const loadThemeAndSize = async (themeId, sizeValue) => {
 
   currentSize = sizeMap[sizeValue];
   currentTheme = themeId;
+
+  // Persist current selections to local storage
+  const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  savedData.theme = themeId;
+  savedData.size = sizeValue;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
 
   try {
     // 1. Load HTML Template
@@ -222,7 +348,12 @@ exportBtnMobile?.addEventListener('click', triggerExport);
 
 // Initial Load
 setupZoom();
+loadPersistedData();
 setupSidebarListeners();
 initThemes().then(() => {
-  loadThemeAndSize(currentTheme, sizeSelect.value);
+  const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const initialSize = savedData.size || sizeSelect.value;
+  // Ensure the size dropdown visually matches the restored data
+  if (sizeSelect && savedData.size) sizeSelect.value = savedData.size;
+  loadThemeAndSize(currentTheme, initialSize);
 });

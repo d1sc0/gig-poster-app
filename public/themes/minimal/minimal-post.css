@@ -1,72 +1,96 @@
 .poster-canvas {
   font-family: 'Helvetica', 'Arial', sans-serif;
+  font-weight: normal;
   color: #000;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 100px;
-  box-sizing: border-box;
-  letter-spacing: -0.02em;
-  background: white;
+  background: rgb(237, 255, 199);
 }
 
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.live-music {
+  position: absolute;
+  top: 50px;
+  font-size: 50px;
+  width: 1080px;
+  margin-left: 50px;
+  text-align: left;
+  text-transform: uppercase;
 }
 
 .band-name {
-  font-size: 140px;
-  line-height: 0.9;
-  margin: 0;
+  position: absolute;
+  top: 110px;
+  font-size: 120px;
+  width: 1080px;
+  margin-left: 50px;
+  font-weight: bold;
+  text-align: left;
   text-transform: uppercase;
-  font-weight: 900;
-}
-
-.venue-info {
-  margin-top: 40px;
 }
 
 .venue {
-  font-size: 60px;
-  font-weight: 700;
-  margin: 0;
+  position: absolute;
+  top: 290px;
+  font-size: 90px;
+  width: 1080px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  margin-left: 50px;
+  text-align: left;
+  text-transform: uppercase;
 }
 
-.town,
-.postcode {
-  font-size: 32px;
-  margin: 5px 0;
-  display: inline-block;
-  margin-right: 15px;
-}
-
-.url {
-  font-size: 24px;
-  margin-top: 20px;
-  opacity: 0.6;
+.divider {
+  position: absolute;
+  left: 50px;
+  top: 700px;
+  width: 930px;
+  height: 10px;
+  background: #000;
 }
 
 .date {
-  font-size: 80px;
-  font-weight: 700;
-  border-top: 5px solid #000;
-  padding-top: 20px;
+  position: absolute;
+  top: 715px;
+  font-size: 60px;
+  width: 1080px;
+  text-align: center;
+  text-transform: left;
 }
 
 .times {
-  font-size: 40px;
-  font-weight: 400;
+  position: absolute;
+  top: 840px;
+  font-size: 60px;
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.location {
+  position: absolute;
+  top: 1150px;
+  font-size: 60px;
+  width: 1080px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.url {
+  position: absolute;
+  top: 1180px;
+  font-size: 60px;
+  width: 1080px;
+  text-align: left;
 }
 
 .banner {
+  position: absolute;
+  top: 939px;
+  width: 1080px;
   background: #000;
   color: #fff;
-  padding: 20px;
-  font-size: 40px;
-  font-weight: 900;
-  text-align: center;
+  font-size: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: left;
 }
