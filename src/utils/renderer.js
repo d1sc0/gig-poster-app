@@ -41,6 +41,7 @@ export function savePoster(node, themeId, sizeValue, venue, date) {
 
   htmlToImage
     .toPng(node, {
+      cacheBust: true, // Crucial for mobile background images
       skipFonts: true,
       width: width,
       height: height,
