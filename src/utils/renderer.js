@@ -1,4 +1,4 @@
-import * as htmlToImage from 'html-to-image';
+import { domToPng } from 'modern-screenshot';
 
 /**
  * Captures the specified DOM element and triggers a browser download as a PNG.
@@ -39,21 +39,21 @@ export function savePoster(node, themeId, sizeValue, venue, date) {
 
   const filename = `${formattedSize}-${formattedVenue}-${formattedDate}.png`;
 
-  htmlToImage
-    .toPng(node, {
-      cacheBust: true, // Crucial for mobile background images
-      skipFonts: true,
-      width: width,
-      height: height,
-      // We reset the transform to 'none' here so the exported image
-      // is rendered at 100% size, ignoring the preview zoom.
-      style: {
-        transform: 'none', // Reset the preview scale for the snapshot
-        margin: '0',
-        left: '0',
-        top: '0',
-      },
-    })
+  domToPng(node, {
+    // If your background images still fail, try toggling this to true,
+    // but modern-screenshot often works better with it off.
+    cacheBust: false,
+    width: width,
+    height: height,
+    // We reset the transform to 'none' here so the exported image
+    // is rendered at 100% size, ignoring the preview zoom.
+    style: {
+      transform: 'none', // Reset the preview scale for the snapshot
+      margin: '0',
+      left: '0',
+      top: '0',
+    },
+  })
     .then(dataUrl => {
       const link = document.createElement('a');
       link.download = filename;

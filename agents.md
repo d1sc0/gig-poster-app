@@ -96,15 +96,15 @@ The application supports three distinct aspect ratios for different output needs
 - Global CSS in `src/styles/style.css` defines the `width` and `height` for these classes, setting the target pixel dimensions for high-quality export.
 - For preview purposes, the `.poster-canvas` uses `transform: scale()` to fit the high-resolution artboard within the visible `preview-area`. This scaling is dynamically adjusted based on the selected size and the viewport width (for mobile responsiveness).
 
-## 4. Snapshot Engine (`html-to-image`)
+## 5. Snapshot Engine (`modern-screenshot`)
 
-The `html-to-image` library is used to convert the HTML content of the `#poster-artboard` into a high-resolution PNG image.
+The `modern-screenshot` library is used to convert the HTML content of the artboard into a high-resolution PNG image.
 
 ### Export Process
 
 - When the "Download" button is clicked, `savePoster()` is called from `renderer.js`.
 - It targets the `#poster-artboard` element.
-- Crucially, it overrides the CSS `transform: scale()` property to `none` during the capture process. This ensures that the image is rendered at its full, native pixel dimensions (e.g., 2480x3508 for A4) rather than the scaled-down preview size.
+- Crucially, it overrides the CSS `transform: scale()` property to `none` during the capture process. This ensures that the image is rendered at its full, native pixel dimensions rather than the scaled-down preview size.
 - The output resolution is typically double the defined pixel dimensions on high-DPI screens due to the device pixel ratio, providing a visually appealing, high-quality export.
 
 ## 5. Status Banner
