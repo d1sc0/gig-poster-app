@@ -351,12 +351,39 @@ document
   });
 
 // Export Triggers
-const triggerExport = () => {
+const triggerExport = async () => {
   const venue = document.querySelector('[data-field="venue"]')?.value || '';
   const date = document.querySelector('[data-field="date"]')?.value || '';
   const sizeSelect = document.querySelector('[data-config="size"]');
   const sizeValue = sizeSelect?.value || 'insta-post';
-  savePoster(artboard, currentTheme, sizeValue, venue, date);
+
+  // Store original button text
+  const btnText = exportBtn?.textContent || '';
+  const mobileBtnText = exportBtnMobile?.textContent || '';
+
+  // Set loading state
+  if (exportBtn) {
+    exportBtn.disabled = true;
+    exportBtn.textContent = 'Generating...';
+  }
+  if (exportBtnMobile) {
+    exportBtnMobile.disabled = true;
+    exportBtnMobile.textContent = '...'; // Keep it short for the header
+  }
+
+  try {
+    await savePoster(artboard, currentTheme, sizeValue, venue, date);
+  } finally {
+    // Restore original state
+    if (exportBtn) {
+      exportBtn.disabled = false;
+      exportBtn.textContent = btnText;
+    }
+    if (exportBtnMobile) {
+      exportBtnMobile.disabled = false;
+      exportBtnMobile.textContent = mobileBtnText;
+    }
+  }
 };
 exportBtn?.addEventListener('click', triggerExport);
 exportBtnMobile?.addEventListener('click', triggerExport);

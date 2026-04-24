@@ -44,7 +44,7 @@ export function savePoster(node, themeId, sizeValue, venue, date) {
   const isA4 = sizeValue === 'a4-print';
   const exportScale = isA4 ? 1 : window.devicePixelRatio || 1;
 
-  domToBlob(node, {
+  return domToBlob(node, {
     cacheBust: false,
     width: width,
     height: height,
