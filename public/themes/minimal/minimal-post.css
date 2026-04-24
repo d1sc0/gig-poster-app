@@ -40,57 +40,53 @@
 .divider {
   position: absolute;
   left: 50px;
-  top: 700px;
-  width: 930px;
+  top: 580px;
+  width: 980px;
   height: 10px;
   background: #000;
 }
 
+.poster-meta {
+  position: absolute;
+  top: 650px;
+  font-size: 40px;
+  margin-left: 50px;
+  width: 1080px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
 .date {
   position: absolute;
-  top: 715px;
+  top: 725px;
   font-size: 60px;
+  margin-left: 50px;
   width: 1080px;
-  text-align: center;
-  text-transform: left;
+  text-align: left;
+  text-transform: uppercase;
 }
 
 .times {
   position: absolute;
-  top: 840px;
+  top: 855px;
   font-size: 60px;
-  width: 1080px;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.location {
-  position: absolute;
-  top: 1150px;
-  font-size: 60px;
-  width: 1080px;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.url {
-  position: absolute;
-  top: 1180px;
-  font-size: 60px;
+  margin-left: 50px;
   width: 1080px;
   text-align: left;
+  text-transform: uppercase;
 }
 
 .banner {
   position: absolute;
-  top: 939px;
+  top: 1000px;
   width: 1080px;
   background: #000;
   color: #fff;
-  font-size: 120px;
-  margin-left: auto;
-  margin-right: auto;
+  font-size: 100px;
+  margin-left: 250px;
+  padding-left: 50px;
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: left;
+  text-transform: uppercase;
 }
