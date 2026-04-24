@@ -18,6 +18,9 @@ html {
 /* Mobile Header */
 .app-header {
   height: var(--header-height);
+  min-height: var(
+    --header-height
+  ); /* Ensure it maintains height even with stacked content */
   background: white;
   border-bottom: 1px solid var(--ui-border);
   position: fixed;
@@ -111,18 +114,21 @@ html {
   width: 100%;
   padding: 0.8rem; /* Increased padding for better touch precision */
   font-size: 1rem; /* Prevents iOS auto-zoom on focus and improves legibility */
+  color: #000 !important; /* Force black text color */
+  -webkit-text-fill-color: #000 !important; /* Essential for iOS Safari to respect the color */
   font-family: inherit; /* Ensures consistent typography */
   background-color: white; /* Ensure white background, especially on iOS */
   border: 1px solid #d1d5db;
   border-radius: 4px;
   margin-bottom: 0.75rem;
   box-sizing: border-box;
-  -webkit-appearance: none; /* Remove default iOS styling */
-  -moz-appearance: none;
-  appearance: none;
+  min-width: 0; /* Prevents date pickers from breaking parent width */
+  -webkit-appearance: none; /* Remove default browser styling for all */
+  -moz-appearance: none; /* Firefox specific */
+  appearance: none; /* Standard property */
 }
 
-/* Specific styling for date and time inputs to add icons */
+/* Custom icons for date, time, and select dropdowns (always present) */
 .sidebar input[type='date'] {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M19 4h-3V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM5 7V6h14v1H5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -139,9 +145,35 @@ html {
   padding-right: 2.5rem; /* Make space for the icon */
 }
 
+.sidebar select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.5rem;
+  padding-right: 2.5rem; /* Make space for the icon */
+}
+
+/* Hide native browser controls for date/time pickers */
+.sidebar input[type='date']::-webkit-calendar-picker-indicator,
+.sidebar input[type='time']::-webkit-calendar-picker-indicator {
+  opacity: 0; /* Hide the native calendar/clock icon */
+  position: absolute; /* Allow our custom icon to show through */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer; /* Keep it clickable */
+}
+
+.sidebar input[type='time']::-webkit-inner-spin-button,
+.sidebar input[type='time']::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Hide native up/down arrows */
+  margin: 0;
+}
+
 .split-input {
   display: flex;
-  gap: 0.75rem; /* Slightly increased gap for better spacing */
+  gap: 0.75rem;
 }
 
 .primary-btn {
@@ -207,7 +239,7 @@ html {
 /* Desktop Overrides */
 @media (min-width: 1024px) {
   .app-header {
-    display: none;
+    display: none !important; /* Ensure mobile header is hidden on desktop */
   }
 
   [data-ui='app-layout'] {
