@@ -8,7 +8,7 @@ The application uses a modular templating approach where each visual theme is se
 
 ### Structure
 
-Each theme (e.g., `minimal`, `grunge`) has a dedicated directory under `public/themes/`. This ensures that templates and CSS can be fetched at runtime in production without being purged by Vite's build process.
+Each theme has a dedicated directory under `public/themes/`. This ensures templates and CSS are served as static assets and can be fetched at runtime in production without being purged by Vite's build process.
 
 ```
 src/

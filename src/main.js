@@ -342,7 +342,13 @@ document
   });
 
 // Export Triggers
-const triggerExport = () => savePoster('poster-artboard');
+const triggerExport = () => {
+  const venue = document.querySelector('[data-field="venue"]')?.value || '';
+  const date = document.querySelector('[data-field="date"]')?.value || '';
+  const sizeSelect = document.querySelector('[data-config="size"]');
+  const sizeValue = sizeSelect?.value || 'insta-post';
+  savePoster(artboard, currentTheme, sizeValue, venue, date);
+};
 exportBtn?.addEventListener('click', triggerExport);
 exportBtnMobile?.addEventListener('click', triggerExport);
 

@@ -7,13 +7,37 @@ import * as htmlToImage from 'html-to-image';
  * using CSS transforms, this function captures it at its full defined pixel resolution
  * by temporarily overriding styles during the snapshot process.
  */
-export function savePoster(elementId) {
-  const node = document.getElementById(elementId);
+export function savePoster(node, themeId, sizeValue, venue, date) {
+  if (!node) return;
 
   // Get the raw dimensions defined in CSS (e.g. 1080px or 2480px)
   // (e.g. 1080px) before the preview scale is applied.
   const width = node.offsetWidth;
   const height = node.offsetHeight;
+
+  // --- Construct dynamic filename ---
+  const formattedSize = (() => {
+    switch (sizeValue) {
+      case 'insta-post':
+        return 'post';
+      case 'insta-story':
+        return 'story';
+      case 'a4-print':
+        return 'a4';
+      default:
+        return 'poster';
+    }
+  })();
+  const formattedVenue = venue
+    ? venue.toLowerCase().replace(/\s+/g, '-')
+    : 'unknown-venue';
+  const formattedDate = (() => {
+    if (!date) return 'unknown-date';
+    const [year, month, day] = date.split('-'); // YYYY-MM-DD from input type="date"
+    return `${day}-${month}-${year.substring(2)}`; // DD-MM-YY
+  })();
+
+  const filename = `${formattedSize}-${formattedVenue}-${formattedDate}.png`;
 
   htmlToImage
     .toPng(node, {
@@ -31,7 +55,7 @@ export function savePoster(elementId) {
     })
     .then(dataUrl => {
       const link = document.createElement('a');
-      link.download = `poster-${Date.now()}.png`;
+      link.download = filename;
       link.href = dataUrl;
       link.click();
     })
