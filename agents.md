@@ -46,32 +46,6 @@ Themes can customize how the native HTML date and time pickers are presented on 
 
 The templates use a placeholder syntax where `{type}` corresponds to the keys returned by the JavaScript `Intl` engine.
 
-#### Configuration Examples
-
-**1. Minimalist (Long form)**
-
-```json
-"dateOptions": { "weekday": "long", "day": "numeric", "month": "short" },
-"dateTemplate": "{weekday}, {day} {month}",
-"timeOptions": { "hour": "2-digit", "minute": "2-digit", "hour12": false }
-// Poster Display: "Monday, 24 Oct" | "19:00"
-```
-
-**2. Funky (Compact/US style)**
-
-```json
-"dateOptions": { "day": "2-digit", "month": "2-digit", "year": "2-digit" },
-"timeOptions": { "hour": "numeric", "minute": "2-digit", "hour12": true }
-// Poster Display: "10/24/23" | "7:00 PM"
-```
-
-**3. Simple Mono (Narrow)**
-
-```json
-"dateOptions": { "day": "numeric", "month": "narrow" }
-// Poster Display: "24 O"
-```
-
 #### Supported Values
 
 Common fields include `weekday`, `year`, `month`, and `day`. Valid values for these include:
